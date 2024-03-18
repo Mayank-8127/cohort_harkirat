@@ -1,8 +1,11 @@
 let i = 30;
 function countDown () {
-    console.log(i);
-    i = i - 1;
+    if (i >= 0) {
+        console.log(i);
+        i = i - 1;
+    } else {
+        clearInterval(intervalID);
+    }
 }
-for (j = 0; j < 31; j++) {
-    setTimeout(countDown,1 * 1000);
-}
+
+let intervalID = setInterval(countDown,1 * 1000);
