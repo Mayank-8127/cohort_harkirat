@@ -1,10 +1,13 @@
-let i = 10;
+let i = 0;
+let lastTime = new Date();
 function countDown () {
-    if (i >= 0) {
-        const currentDate = new Date();
+    if (i <= 10) {
+        let currentTime = new Date();
         console.log(i);
-        i = i - 1;
-        console.log(currentDate.getTime());
+        i = i + 1;
+        let time = currentTime.getTime() - lastTime.getTime();
+        console.log("Time taken: " + time + "ms");
+        lastTime = new Date();
     } else {
         clearInterval(intervalID);
     }
