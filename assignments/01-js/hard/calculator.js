@@ -6,7 +6,7 @@
     - multiply: takes a number and multiply it to the result
     - divide: takes a number and divide it to the result
     - clear: makes the `result` variable to 0
-    - getResult: returns the value of `result` variable
+    - getResult: returns the result of `result` variable
     - calculate: takes a string expression which can take multi-arithmetic operations and give its result
       example input: `10 +   2 *    (   6 - (4 + 1) / 2) + 7`
       Points to Note: 
@@ -16,6 +16,42 @@
   Once you've implemented the logic, test your code by running
 */
 
-class Calculator {}
+class Calculator {
+  constructor(){
+    this.result = 0;
+  }
+  add(number){
+    this.result += number;
+  }
+  subtract(number){
+    this.result -= number;
+  }
+  multiply(number){
+    this.result *= number;
+  }
+  divide(number){
+    if(number == 0){
+      throw error;
+    }
+    else{
+      this.result /= number;
+    }
+  }
+  clear(){
+    this.result = 0;
+  }
+  getResult(){
+    return this.result;
+  }
+  calculate(expression){
+    let a = eval(expression);
+    if (a == Infinity){
+      throw error;
+    }
+    else {
+      this.result = a;
+    }
+  }
+}
 
 module.exports = Calculator;
