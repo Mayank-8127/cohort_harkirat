@@ -9,7 +9,7 @@ function sleep(milliseconds) {
         let a = new Date();
         while(true){
             let b = new Date();
-            if(b.getTime() - a.getTime() > milliseconds){
+            if(b.getTime() - a.getTime() >= milliseconds){
                 break;
             }
         }
