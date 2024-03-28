@@ -5,14 +5,29 @@
  */
 
 function wait1(t) {
+    return new Promise(function(resolve){
+        setTimeout(function(){
+            resolve()
+        }, t*1000)
+    })
 
 }
 
 function wait2(t) {
+    return new Promise(function(resolve){
+        setTimeout(function(){
+            resolve()
+        }, t*1000)
+    })
 
 }
 
 function wait3(t) {
+    return new Promise(function(resolve){
+        setTimeout(function(){
+            resolve()
+        }, t*1000)
+    })
 
 }
 
