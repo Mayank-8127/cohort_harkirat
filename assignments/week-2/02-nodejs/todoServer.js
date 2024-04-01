@@ -40,31 +40,75 @@
   Testing the server - run `npm run test-todoServer` command in terminal
  */
   const express = require('express');
-  const bodyParser = require('body-parser');
+  //const bodyParser = require('body-parser');
   const app = express();
-  const port = 3000;
-  app.use(bodyParser.json());
+  const port = 3001;
+  //app.use(bodyParser.json());
+  app.use(express.json());
+
+  let todos = [];
+
+  function todo(a,b,c,d){
+    this.title = a;
+    this.completed = b;
+    this.description = c;
+    this.id = d;
+  }
   
-  let todo = [];
+  let x = 100;
 
   app.get("/todos", (req,res) => {
-    res.statusCode(200).send(todo);
+    res.status(200).send(todos);
   })
 
   app.get("/todos/:id", (req,res) => {
-
+    for (i = 0; i < todos.length; i++){
+      if (todos[i].id == req.params.id){
+        res.status(200).send(todos[i]);
+      }
+    }
+    res.sendStatus(404)
   })
 
   app.post("/todos", (req,res) => {
-
+    const title = req.body.title;
+    const description = req.body.description;
+    const completed = req.body.completed;
+    x++;
+    let a = new todo(title,completed,description,x);
+    todos.push(a);
+    res.status(201).send({id: x});
   })
 
   app.put("/todos/:id", (req,res) => {
-
+    const title = req.body.title;
+    const description = req.body.description;
+    const completed = req.body.completed;
+    for (i = 0; i < todos.length; i++){
+      if (todos[i].id == req.params.id){
+        if(title != undefined){
+          todos[i].title = title;
+        }
+        if(description != undefined){
+          todos[i].description = description;
+        }
+        if(completed != undefined){
+          todos[i].completed = completed;
+        }
+        res.status(200).send();
+      }
+    }
+    res.sendStatus(404);
   })
 
   app.delete("/todos/:id", (req,res) => {
-
+    for (i = 0; i < todos.length; i++){
+      if (todos[i].id == req.params.id){
+        todos.splice(i,1);
+        res.sendStatus(200);
+      }
+    }
+    res.sendStatus(404)
   })
 
   app.listen(port)
