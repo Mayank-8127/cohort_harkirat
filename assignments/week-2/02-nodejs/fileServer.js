@@ -16,6 +16,18 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const app = express();
+const port = 3001;
 
+app.get('/files/',(req,res) => {
+  fs.readdir("/home/mayank/repos/cohort_harkirat/assignments/week-2/02-nodejs/files/", 'utf-8' ,(err, files) => {
+    res.send(files); 
+  })
+})
+
+app.get('/file/:filename', (req,res) => {
+  fs.readFile
+})
+
+app.listen(port)
 
 module.exports = app;
