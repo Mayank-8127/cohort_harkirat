@@ -56,7 +56,6 @@
   }
   
   let x = 100;
-  let y = 1;
 
   app.get("/todos", (req,res) => {
     res.status(200).send(todos);
@@ -65,14 +64,10 @@
   app.get("/todos/:id", (req,res) => {
     for (i = 0; i < todos.length; i++){
       if (todos[i].id == req.params.id){
-        res.status(200).send(todos[i]);
-        y = 0;
+        return res.status(200).send(todos[i]);
       }
     }
-    if(y){
-      res.sendStatus(404)
-    }
-    y = 1;
+    res.sendStatus(404)
   })
 
   app.post("/todos", (req,res) => {
@@ -100,28 +95,20 @@
         if(completed != undefined){
           todos[i].completed = completed;
         }
-        res.status(200).send();
-        y = 0;
+        return res.status(200).send();
       }
     }
-    if(y){
-      res.sendStatus(404)
-    }
-    y = 1;
+    res.sendStatus(404)
   })
 
   app.delete("/todos/:id", (req,res) => {
     for (i = 0; i < todos.length; i++){
       if (todos[i].id == req.params.id){
         todos.splice(i,1);
-        res.sendStatus(200);
-        y = 0;
+        return res.sendStatus(200);
       }
     }
-    if(y){
-      res.sendStatus(404)
-    }
-    y = 1;
+    res.sendStatus(404)
   })
 
   app.listen(port)
