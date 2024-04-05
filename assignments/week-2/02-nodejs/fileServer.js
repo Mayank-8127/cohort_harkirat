@@ -25,8 +25,20 @@ app.get('/files/',(req,res) => {
 })
 
 app.get('/file/:filename', (req,res) => {
-  fs.readFile
+  let path = "/home/mayank/repos/cohort_harkirat/assignments/week-2/02-nodejs/files/" + req.params.filename;
+  fs.readFile(path, 'utf-8', (err, data) => {
+    if (err){
+      res.status(404).send('File not found');
+    }
+    else {
+      res.send(data);
+    }
+  })
 })
+
+app.get('*', function(req, res){
+  res.status(404).send('Route not found');
+});
 
 app.listen(port)
 
