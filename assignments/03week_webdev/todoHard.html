@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display: flex;">
+        <input type="text" placeholder="Text..." style="margin-right: 10px;">
+        <button onclick="addTodo()" style="margin-right: 10px;">Add Todo</button>
+        <button onclick="deleteFirstTodo()" style="margin-right: 10px;">Delete First Todo</button>
+        <button onclick="deleteLastTodo()">Delete Last Todo</button>
+    </div>
+    <div id="todos">
+
+    </div>
+    <script>
+        let todos = [];
+        count = 0;
+        function addTodo(){
+            todos.push({
+                "todo": document.querySelector("input").value
+            })
+            render();
+        }
+        function deleteFirstTodo(){
+            todos.splice(0,1);
+            render();
+        }
+        function deleteLastTodo(){
+            todos.pop();
+            render();
+        }
+        function deleteTodo(i){
+            todos.splice(i, 1);
+            render();
+        }
+        function editTodo(i){
+            todos[i].todo = document.querySelector("input").value;
+            render();
+        }
+
+        function createTodo(a,i){
+            const todo = document.createElement("span");
+            todo.innerHTML = a.todo;
+            todo.setAttribute("style", "margin-right: 10px;");
+            const button = document.createElement("button");
+            button.innerHTML = "Delete Todo";
+            button.setAttribute("onclick" , "deleteTodo("+ i +")");
+            const button2 = document.createElement("button");
+            button2.innerHTML = "Edit Todo";
+            button2.setAttribute("onclick" , "editTodo("+ i +")");
+            const div = document.createElement("div");
+            div.appendChild(todo);
+            div.appendChild(button);
+            div.appendChild(button2);
+            div.setAttribute("id", i);
+            return div;
+        }
+
+        function render(){
+            document.getElementById("todos").innerHTML = "";
+            for(let i = 0; i < todos.length; i++){
+                document.getElementById("todos").appendChild(createTodo(todos[i],i));
+            }
+        }
+    </script>
+</body>
+</html>
