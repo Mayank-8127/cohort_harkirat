@@ -11,4 +11,4 @@ while(true){
     }
 }
 console.log(hash)
-console.log(input)
+console.log(input) 
