@@ -4,7 +4,9 @@ function List(props){
     const itemList = props.list;
     const listItems = itemList.map(
         item => <li key={item.id}>
-            <p>Public Key = {item.PublicKey} ,Private Key = {item.PrivateKey} ,Balance = {item.Balance}</p>
+            <p>Public Key = {item.PublicKey}</p>
+            <p>Private Key = {item.PrivateKey}</p>
+            <p>Balance = {item.Balance}</p>
             </li>
     )
     return(

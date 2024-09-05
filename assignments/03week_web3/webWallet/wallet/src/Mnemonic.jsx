@@ -9,7 +9,7 @@ function GetMnemonic(){
         setEle(
         <>
             {/* <button onClick={func2} id="buttonnew">Generate New Mnemonic</button> */}
-            <p>Mnemonic: {mnem}</p>
+            <h3>Mnemonic: {mnem}</h3>
         </>);
     }
     const func = () => {
@@ -18,7 +18,7 @@ function GetMnemonic(){
         setEle(
         <>
             {/* <button onClick={func2} id="buttonnew">Generate New Mnemonic</button> */}
-            <p>Mnemonic: {mnem}</p>
+            <h3>Mnemonic: {mnem}</h3>
             <script>
                 {document.getElementById("button").setAttribute("style", "display: none")}
                 {document.getElementById("solbutton").setAttribute("style", "display: block")}
