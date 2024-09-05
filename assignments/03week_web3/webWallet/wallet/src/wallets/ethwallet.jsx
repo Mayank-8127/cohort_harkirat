@@ -5,10 +5,10 @@ import { HDNodeWallet, Wallet } from "ethers";
 import React, {useState} from 'react';
 
 function EthWallet() {
-  const seed = mnemonicToSeedSync(Mnemonic());
   const [eth, setEth] = useState([]);
 
   const generateEthWallet = async () => {
+    const seed = mnemonicToSeedSync(Mnemonic());
     const patheth = `m/44'/60'/${eth.length + 1}'/0'`;
     const privateKey = HDNodeWallet.fromSeed(seed).derivePath(patheth).privateKey;
     const wallet = new Wallet(privateKey);

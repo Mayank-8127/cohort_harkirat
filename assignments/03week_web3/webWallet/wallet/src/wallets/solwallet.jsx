@@ -8,10 +8,11 @@ import bs58 from 'bs58'
 import React, {useState} from 'react';
 
 function SolWallet() {
-  const seed = mnemonicToSeedSync(Mnemonic());
+
   const [sol, setSol] = useState([]);
 
   const generateSolWallet = async () => {
+      const seed = mnemonicToSeedSync(Mnemonic());
     const pathsol = `m/44'/501'/${sol.length + 1}'/0'`;
     const derivedSeed = derivePath(pathsol, seed.toString("hex")).key;
     const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey;

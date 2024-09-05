@@ -1,8 +1,17 @@
 import { generateMnemonic} from "bip39";
 
-function Mnemonic() {
-  let mnemonic = generateMnemonic();
+let mnemonic = generateMnemonic();
+
+export function Mnemonic() {
+
   return (
+    mnemonic
+  )
+}
+
+export function NewMnemonic(){
+  mnemonic = generateMnemonic()
+  return(
     mnemonic
   )
 }

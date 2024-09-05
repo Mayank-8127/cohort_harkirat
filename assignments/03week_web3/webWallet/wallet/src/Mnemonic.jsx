@@ -1,13 +1,23 @@
-import Mnemonic from "./createMnemonic";
+import { Mnemonic, NewMnemonic } from './createMnemonic';
 import React, {useState} from 'react';
 
-const mnemonic = Mnemonic();
 function GetMnemonic(){
-    let mnem = mnemonic;
     const [ele, setEle] = useState();
-    const func = () => {
+    const func2 = () => {
+        let mnemonic = NewMnemonic();
+        let mnem = mnemonic;
         setEle(
         <>
+            {/* <button onClick={func2} id="buttonnew">Generate New Mnemonic</button> */}
+            <p>Mnemonic: {mnem}</p>
+        </>);
+    }
+    const func = () => {
+        let mnemonic = Mnemonic();
+        let mnem = mnemonic;
+        setEle(
+        <>
+            {/* <button onClick={func2} id="buttonnew">Generate New Mnemonic</button> */}
             <p>Mnemonic: {mnem}</p>
             <script>
                 {document.getElementById("button").setAttribute("style", "display: none")}
