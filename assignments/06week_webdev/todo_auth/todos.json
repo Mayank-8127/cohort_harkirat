@@ -1,0 +1,59 @@
+{
+    "admin": {
+        "password": "admin",
+        "count": 7,
+        "todos": [
+            {
+                "id": 2,
+                "todo": "eat food",
+                "isDone": false
+            },
+            {
+                "id": 4,
+                "todo": "watch 100xdevs video",
+                "isDone": true
+            },
+            {
+                "id": 5,
+                "todo": "Go To Gym",
+                "isDone": false
+            },
+            {
+                "id": 6,
+                "todo": "Go To burger king",
+                "isDone": true
+            }
+        ]
+    },
+    "Mayank": {
+        "password": "MayankB",
+        "count": 4,
+        "todos": [
+            {
+                "id": 1,
+                "todo": "Lets Go",
+                "isDone": true
+            },
+            {
+                "id": 2,
+                "todo": "Study",
+                "isDone": false
+            },
+            {
+                "id": 4,
+                "todo": "Study very fast",
+                "isDone": true
+            }
+        ]
+    },
+    "Admin2": {
+        "password": "Admin",
+        "count": 0,
+        "todos": []
+    },
+    "mayank": {
+        "password": "mayank",
+        "count": 0,
+        "todos": []
+    }
+}
