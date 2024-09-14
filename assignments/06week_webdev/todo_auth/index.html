@@ -1,79 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
     <script>
-        async function signin(arg){
-            const username = document.getElementById('signin-username').value;
-            const password = document.getElementById('signin-password').value;
-            const signin = await axios.post("http://localhost:3000/signin", {
-                    username,
-                    password
-            })
-            localStorage.setItem("token", signin.data.token)
-            alert("Signed in successfully")
-            load();
-        }
-        async function signup(){
+        async function signup() {
             const username = document.getElementById('signup-username').value;
             const password = document.getElementById('signup-password').value;
             const signup = await axios.post("http://localhost:3000/signup", {
-                    username,
-                    password
+                username,
+                password
             })
-            alert("Signed up successfully");
+            document.getElementById("msg").innerHTML = signup.data.message
+            document.getElementById('signup-username').value = '';
+            document.getElementById('signup-password').value = '';
+        }
+        async function signin() {
+            const username = document.getElementById('signin-username').value;
+            const password = document.getElementById('signin-password').value;
+            const signin = await axios.post("http://localhost:3000/signin", {
+                username,
+                password
+            })
+            if (signin.data.token) {
+                localStorage.setItem("token", signin.data.token)
+                load();
+            }
+            document.getElementById("msg").innerHTML = signin.data.message
+            document.getElementById('signin-username').value = '';
+            document.getElementById('signin-password').value = '';
         }
         async function load() {
-                const signin = await axios.get("http://localhost:3000/todo", {
+            let response = {};
+            try {
+                response = await axios.get("http://localhost:3000/todos", {
                     headers: {
                         "token": localStorage.getItem("token")
                     }
                 })
-                if(signin){
-                    const username = JSON.stringify(signin.data.todos[0].todo);
-                    const password = JSON.stringify(signin.data.todos[1].todo);
-                    document.getElementById("user").innerHTML += username;
-                    document.getElementById("password").innerHTML += password;
-                    document.getElementById("signup").style.display = "none";
-                    document.getElementById("signin").style.display = "none";
-                    document.getElementById("user").style.display = "block";
-                    document.getElementById("password").style.display = "block";
-                    document.getElementById("logout").style.display = "block";
-                }
+                console.log(response);
+            } catch (error) {
+
+            }
+            if (response.data.todos) {
+                render(response.data.todos);
+                document.getElementById("user").innerHTML = "User: " + response.data.username;
+                document.getElementById("signup").style.display = "none";
+                document.getElementById("signin").style.display = "none";
+                document.getElementById("user").style.display = "block";
+                document.getElementById("logout").style.display = "block";
+                document.getElementById("todocontrols").style.display = "block";
+                document.getElementById("textinput").value = '';
+            }
+            //document.getElementById("msg").innerHTML = response.data.message
         }
-        load();
-        function logout(){
+        function logout() {
             localStorage.removeItem("token");
             document.getElementById("signup").style.display = "block";
             document.getElementById("signin").style.display = "block";
             document.getElementById("user").style.display = "none";
-            document.getElementById("password").style.display = "none";
+            document.getElementById("todos").innerHTML = "";
             document.getElementById("logout").style.display = "none";
+            document.getElementById("todocontrols").style.display = "none";
+            document.getElementById("textinput").value = '';
             document.getElementById("user").innerHTML = "User: ";
-            document.getElementById("password").innerHTML = "Password: ";
+            document.getElementById("msg").innerHTML = "Logged out";
         }
+        async function addTodo() {
+            let response = {}
+            try {
+                response = await axios.post("http://localhost:3000/addtodo", {
+                    "todo": document.getElementById("textinput").value,
+                },
+                {
+                    headers: {
+                        "token": localStorage.getItem("token")
+                    }
+                })
+            } catch (error) {
+                document.getElementById("msg").innerHTML = "Error adding todo";
+                return;
+            }
+            document.getElementById("msg").innerHTML = response.data.message;
+            document.getElementById('textinput').value = "";
+            load();
+        }
+        async function deleteTodo(i) {
+            let response = {}
+            try {
+                response = await axios.delete("http://localhost:3000/deletetodo",
+                {
+                    headers: {
+                        "token": localStorage.getItem("token")
+                    },
+                    data: {
+                        "id": i
+                    }
+                }
+                )
+            } catch (error) {
+                document.getElementById("msg").innerHTML = "Error adding todo";
+                return;
+            }
+            document.getElementById("msg").innerHTML = response.data.message;
+            load();
+        }
+        async function markAsDone(i) {
+            let response = {}
+            try {
+                response = await axios.put("http://localhost:3000/markasdone", {
+                    "id": i
+                },
+                {
+                    headers: {
+                        "token": localStorage.getItem("token")
+                    }
+                })
+            } catch (error) {
+                document.getElementById("msg").innerHTML = "Error marking as done";
+                return;
+            }
+            document.getElementById("msg").innerHTML = response.data.message;
+            load();
+        }
+        async function editTodo(i) {
+            let response = {}
+            try {
+                response = await axios.put("http://localhost:3000/edittodo", {
+                    "id": i,
+                    "todo": document.getElementById("textinput").value
+                },
+                {
+                    headers: {
+                        "token": localStorage.getItem("token")
+                    }
+                })
+            } catch (error) {
+                document.getElementById("msg").innerHTML = "Error Editing Todo";
+                return;
+            }
+            document.getElementById("msg").innerHTML = response.data.message;
+            document.getElementById('textinput').value = "";
+            load();
+        }
+        function createTodo(a, i) {
+            const todo = document.createElement("span");
+            let status = '  - Not Done';
+            if(a.isDone){
+                status = "  - Done"
+            }
+            todo.innerHTML = a.todo + status;
+            todo.setAttribute("style", "margin-right: 10px;");
+            const button = document.createElement("button");
+            button.innerHTML = "Delete Todo";
+            button.setAttribute("onclick", "deleteTodo(" + (i+1) + ")");
+            const button2 = document.createElement("button");
+            button2.innerHTML = "Mark as Done";
+            button2.setAttribute("onclick", "markAsDone(" + (i+1) + ")");
+            const button3 = document.createElement("button");
+            button3.innerHTML = "Edit Todo";
+            button3.setAttribute("onclick", "editTodo(" + (i+1) + ")");
+            const div = document.createElement("div");
+            div.appendChild(todo);
+            div.appendChild(button);
+            div.appendChild(button2);
+            div.appendChild(button3);
+            div.setAttribute("id", i);
+            return div;
+        }
+        function render(todos) {
+            document.getElementById("todos").innerHTML = "";
+            for (let i = 0; i < todos.length; i++) {
+                document.getElementById("todos").appendChild(createTodo(todos[i], i));
+            }
+        }
+        load();
     </script>
     <div id="signup">
         Signup
-        <span><input id="signup-username" type="text" placeholder="username"><input id="signup-password" type="password" placeholder="password"></span>
+        <span><input id="signup-username" type="text" placeholder="username"><input id="signup-password" type="password"
+                placeholder="password"></span>
         <span><button onclick="signup()">Signup</button></span>
     </div>
     <div id="signin">
         Signin
-        <span><input id="signin-username" type="text" placeholder="username"><input id="signin-password" type="password" placeholder="password"></span>
+        <span><input id="signin-username" type="text" placeholder="username"><input id="signin-password" type="password"
+                placeholder="password"></span>
         <span><button onclick="signin()">Signin</button></span>
     </div>
     <div id="user" style="display: none;">
         User:
     </div>
-    <div id="password" style="display: none;">
-        Password:
-    </div>
     <div id="logout" style="display: none;"><button onclick="logout()">Logout</button></div>
+    <br>
+    <div id="todocontrols" style="display: none;">
+        <input id="textinput" type="text" placeholder="Add/edit todo..." style="margin-right: 10px;">
+        <button onclick="addTodo()" style="margin-right: 10px;">Add Todo</button>
+        <br>
+        <br>
+    </div>
+    <div id="msg"></div>
+    <br>
+    <div id="todos"></div>
 </body>
+
 </html>

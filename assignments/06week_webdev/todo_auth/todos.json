@@ -1,58 +1,34 @@
 {
     "admin": {
-        "password": "admin",
-        "count": 7,
-        "todos": [
-            {
-                "id": 2,
-                "todo": "eat food",
-                "isDone": false
-            },
-            {
-                "id": 4,
-                "todo": "watch 100xdevs video",
-                "isDone": true
-            },
-            {
-                "id": 5,
-                "todo": "Go To Gym",
-                "isDone": false
-            },
-            {
-                "id": 6,
-                "todo": "Go To burger king",
-                "isDone": true
-            }
-        ]
+        "password": "adminn",
+        "count": 0,
+        "todos": []
     },
     "Mayank": {
-        "password": "MayankB",
-        "count": 4,
+        "password": "Mayank",
+        "count": 3,
         "todos": [
             {
-                "id": 1,
                 "todo": "Lets Go",
-                "isDone": true
+                "isDone": false
             },
             {
-                "id": 2,
                 "todo": "Study",
                 "isDone": false
             },
             {
-                "id": 4,
                 "todo": "Study very fast",
-                "isDone": true
+                "isDone": false
             }
         ]
     },
-    "Admin2": {
-        "password": "Admin",
+    "mayank": {
+        "password": "mayankb",
         "count": 0,
         "todos": []
     },
-    "mayank": {
-        "password": "mayank",
+    "adam": {
+        "password": "eve",
         "count": 0,
         "todos": []
     }
