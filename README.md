@@ -38,40 +38,40 @@
 
 ## Web 3 / Blockchain
 
-### week 1 web 3
+### week 1
 - how currencies work
 - why cryptocurrency/blockchain
 - hashing
 - **proof of work**
 - bitcoin whitepaper
-### week 2 web 3
+### week 2
 - encodings and different base representations
 - asymetric and symetric encryptions
 - public/private keypair
 - **how transactions work on a blockchain**
 - hierarchical deterministic (hd) wallets
 - creating a wallet
-### week 3 web 3
+### week 3
 - eth wallets
 - sol wallets
 - rpc calls on eth
 - rpc calls on sol
 - **creating a web based hd wallet generator**
-### week 4 web 3
+### week 4
 - bitcoin vs etherium vs solana
 - smart contracts
 - token program
 - data model on solana
 - solana cli
 - **creating a token on devnet using solana cli**
-### week 5 web 3
+### week 5
 - **wallet adapters for solana**
 - requesting airdrops
 - showing user balance
 - sign a message
 - sending transactions
 - decentralised app (dapp)
-### week 6 web 3
+### week 6
 - tokens in solana
 - transaction vs instruction
 - **associated token accounts**
