@@ -1,5 +1,7 @@
 # Progress in 100xdevs *web development and web 3* cohort by harkirat
 
+### /assignments
+
 ## Web Development
 
 ### week 1
