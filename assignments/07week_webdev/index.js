@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { TodoModel, UserModel } = require("./db");
 const {auth, JWT_SECRET} = require("./auth")
+const { z } = require("zod");
 
 const app = express();
 
@@ -12,6 +13,25 @@ app.post('/signup', async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
+    
+    const myschema = z.object({
+        email: z.string().min(5).max(200).email(),
+        password: z.string().min(6).max(200),
+        name: z.string().min(2).max(200)
+    });
+
+    const validation = myschema.safeParse({
+        email: email,
+        password: password,
+        name: name
+    });
+
+    if(validation.success == false){
+        res.json({
+            message: "Invalid format"
+        });
+        return;
+    }
 
     const hashedPassword = await bcrypt.hash(password, 5);
 
@@ -29,6 +49,23 @@ app.post('/signup', async (req, res) => {
 app.post('/signin', async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
+
+    const myschema = z.object({
+        email: z.string().min(5).max(200).email(),
+        password: z.string().min(6).max(200),
+    });
+
+    const validation = myschema.safeParse({
+        email: email,
+        password: password,
+    });
+
+    if(validation.success == false){
+        res.json({
+            message: "Invalid format"
+        });
+        return;
+    }
 
     const user = await UserModel.findOne({
         email: email,
@@ -56,7 +93,11 @@ app.post('/todo', auth, async (req, res) => {
     const todo = req.body.todo;
     const userId = req.userid;
 
-    if(!todo){
+    const myschema = z.string().max(10000).min(1);
+
+    const validation = myschema.safeParse(todo);
+
+    if(validation.success == false){
         res.send({
             message: "Invalid format"
         });
@@ -78,9 +119,13 @@ app.put('/todo', auth, async (req, res) => {
     const todo = req.body.todo;
     const userId = req.userid;
 
-    if(!todo){
+    const myschema = z.string().max(10000).min(1);
+
+    const validation = myschema.safeParse(todo);
+
+    if(validation.success == false){
         res.send({
-            message: "Todo not found"
+            message: "Invalid format"
         });
         return;
     }
