@@ -13,7 +13,16 @@ function auth(req,res,next){
         return
     }
 
-    const user = jwt.verify(token, JWT_SECRET);
+    let user;
+    try{
+        user = jwt.verify(token, JWT_SECRET);
+    }
+    catch(e){
+        res.status(403).json({
+            message: "Error authenticating"
+        })
+        return
+    }
 
     if(user){
         req.userid = user.id;

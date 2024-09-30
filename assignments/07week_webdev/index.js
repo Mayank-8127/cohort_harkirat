@@ -32,14 +32,22 @@ app.post('/signup', async (req, res) => {
         });
         return;
     }
+    try{
+        const hashedPassword = await bcrypt.hash(password, 5);
+        
+        await UserModel.create({
+            email: email,
+            password: hashedPassword,
+            name: name
+        });
+    }
+    catch(e){
+        res.json({
+            message: "Error signing up"
+        })
+        return
+    }
 
-    const hashedPassword = await bcrypt.hash(password, 5);
-
-    await UserModel.create({
-        email: email,
-        password: hashedPassword,
-        name: name
-    });
 
     res.json({
         message: "You are signed up"
@@ -67,16 +75,35 @@ app.post('/signin', async (req, res) => {
         return;
     }
 
-    const user = await UserModel.findOne({
-        email: email,
-    });
-
-    const match = await bcrypt.compare(password, user.password);
+    let user;
+    let match;
+    try{
+        user = await UserModel.findOne({
+            email: email,
+        });
+    
+        match = await bcrypt.compare(password, user.password);
+    }
+    catch(e){
+        res.json({
+            message: "Error signing in"
+        })
+        return
+    }
 
     if(match){
-        const token = jwt.sign({
-            id: user._id
-        }, JWT_SECRET);
+        let token;
+        try{
+            token = jwt.sign({
+                id: user._id
+            }, JWT_SECRET);
+        }
+        catch(e){
+            res.json({
+                message: "Error signing in"
+            })
+            return
+        }
 
         res.json({
             token: token
@@ -103,12 +130,19 @@ app.post('/todo', auth, async (req, res) => {
         });
         return;
     }
-
-    await TodoModel.create({
-        title: todo,
-        done: false,
-        userId: userId
-    });
+    try{
+        await TodoModel.create({
+            title: todo,
+            done: false,
+            userId: userId
+        });
+    }
+    catch(e){
+        res.json({
+            message: "Error adding todo"
+        })
+        return
+    }
 
     res.send({
         message: "Todo added"
@@ -130,14 +164,28 @@ app.put('/todo', auth, async (req, res) => {
         return;
     }
     
-    await TodoModel.findOneAndUpdate({
-        title: todo,
-        userId: userId
-    },
-    {
-        done: true
+    let update;
+    try{
+        update = await TodoModel.findOneAndUpdate(
+            {
+                title: todo,
+                userId: userId,
+                done: false
+            },
+            {
+                done: true
+            }
+        );
+        if(update == null){
+            throw new Error;
+        }
     }
-);
+    catch(e){
+        res.json({
+            message: "Error marking as done"
+        })
+        return
+    }
 
     res.send({
         message: "Todo marked as done"
@@ -146,9 +194,19 @@ app.put('/todo', auth, async (req, res) => {
 
 app.get('/todo', auth, async (req, res) => {
     const userId = req.userid;
-    const todos = await TodoModel.find({
-        userId: userId
-    });
+    let todos;
+    
+    try{
+        todos = await TodoModel.find({
+            userId: userId
+        });
+    }
+    catch(e){
+        res.json({
+            message: "Error fetching todos"
+        })
+        return
+    }
 
     if(!todos){
         res.send([]);
